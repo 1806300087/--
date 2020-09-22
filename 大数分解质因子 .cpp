@@ -28,10 +28,6 @@ namespace MR{
       }
       return 1;
   }
-  ll abss(ll a)
-  {
-      return a<0?-a:a;
-  }
   ll f(ll x,ll mod,int a)
   {
       return (qmul(x,x,mod)+a)%mod;
@@ -42,26 +38,30 @@ namespace MR{
       do {
           a = f(a,N,seed);
           b = f(f(b,N,seed),N,seed);
-          p = __gcd( abss( b - a ) , N);
+          p = __gcd( abs( b - a ) , N);
           if( p > 1&&p<N) return p;
       } while( b != a );
       return 0;
   }
-  void p_r(vector<int> &cnt,ll x)
+  void p_r(vector<ll> &cnt,ll x)
   {
+
+      if((x&1)==0)
+      {
+        cnt.emplace_back(2);
+        while((x&1)==0)x >>= 1;
+      }
+
       if(x==1)return ;
       if(M_R(x))
       {
           cnt.push_back(x);return ;
-          //mi=min(mi,x);
-          //cnt++;
           return ;
       }
       ll p=0;
       while(p==0){
       int seed=rand();
       p=find_factorplus(x,seed);
-     // cout<<p<<endl;
       }
       p_r(cnt,p);
       p_r(cnt,x/p);
@@ -69,4 +69,3 @@ namespace MR{
 }
 //直接调用 MR::p_r(cnt,x)，即可把x的所有质因子存放在cnt中
 //调用 MR::M_R(x) 可判断x是否为质因子
-
